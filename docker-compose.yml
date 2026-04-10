@@ -3,46 +3,38 @@ version: '3.8'
 services:
   app:
     build:
-      context: .
-      dockerfile: docker/php/Dockerfile
+      context: ./docker/php
     container_name: crm_app
-    restart: unless-stopped
-    working_dir: /var/www
     volumes:
       - ./src:/var/www
-    networks:
-      - crm_network
+    working_dir: /var/www
+    depends_on:
+      - db
 
   nginx:
     image: nginx:latest
     container_name: crm_nginx
-    restart: unless-stopped
     ports:
       - "8000:80"
     volumes:
       - ./src:/var/www
-      - ./docker/nginx:/etc/nginx/conf.d
-    networks:
-      - crm_network
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
 
-  mysql:
+  db:
     image: mysql:8.0
-    container_name: crm_mysql
-    restart: unless-stopped
+    container_name: crm_db
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: crm
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: crm_user
       MYSQL_PASSWORD: secret
     ports:
       - "3306:3306"
     volumes:
       - dbdata:/var/lib/mysql
-    networks:
-      - crm_network
-
-networks:
-  crm_network:
 
 volumes:
   dbdata:
