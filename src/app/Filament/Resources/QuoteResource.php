@@ -40,10 +40,12 @@ class QuoteResource extends Resource
                         ])
                         ->default('draft')
                         ->required(),
+                    // lazy loading:
                     Forms\Components\Select::make('client_id')
                         ->label('Kunde')
-                        ->options(Client::all()->pluck('company_name', 'id'))
+                        ->relationship('client', 'company_name')
                         ->searchable()
+                        ->preload()
                         ->required(),
                     Forms\Components\DatePicker::make('valid_until')
                         ->label('Gültig bis')

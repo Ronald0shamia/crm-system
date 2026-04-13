@@ -25,7 +25,9 @@ class ContactResource extends Resource
                 ->schema([
                     Forms\Components\Select::make('client_id')
                         ->label('Kunde')
-                        ->options(Client::all()->pluck('company_name', 'id'))
+                        ->relationship('client', 'company_name')
+                        ->searchable()
+                        ->preload()
                         ->searchable()->required(),
                     Forms\Components\TextInput::make('position')
                         ->label('Position'),

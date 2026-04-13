@@ -38,20 +38,4 @@ class Quote extends Model
     {
         return $this->hasOne(Invoice::class);
     }
-
-    public function calculateTotal(): void
-    {
-        $this->total = $this->items->sum('total');
-        $this->save();
-    }
-
-    protected static function booted(): void
-    {
-        static::creating(function (Quote $quote) {
-            $quote->quote_number = 'QU-' . str_pad(
-                (Quote::max('id') ?? 0) + 1, 5, '0', STR_PAD_LEFT
-            );
-            $quote->user_id = auth()->id();
-        });
-    }
 }
