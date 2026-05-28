@@ -26,4 +26,19 @@ class Client extends Model
     {
         return $this->hasMany(Invoice::class);
     }
+
+    public function monitors(): HasMany
+    {
+        return $this->hasMany(Monitor::class);
+    }
+
+    public function wordpressSites(): HasMany
+    {
+        return $this->hasMany(WordpressSite::class);
+    }
+
+    public function googleAccounts(): HasMany
+    {
+        return $this->hasMany(GoogleAccount::class);
+    }
 }

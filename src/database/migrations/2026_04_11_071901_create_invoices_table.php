@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('quote_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('invoice_number')->unique();
+            $table->string('status')->default('draft');
+            $table->date('issued_at')->nullable();
+            $table->date('due_at')->nullable();
+            $table->decimal('total', 12, 2)->default(0);
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

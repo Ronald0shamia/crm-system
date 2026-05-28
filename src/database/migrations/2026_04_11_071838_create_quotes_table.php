@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('quotes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
+            $table->string('quote_number')->unique();
+            $table->string('status')->default('draft');
+            $table->date('valid_until');
+            $table->decimal('total', 12, 2)->default(0);
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
